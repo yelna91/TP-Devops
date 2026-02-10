@@ -15,11 +15,10 @@ jobs:
           grep 'style="color:blue;" ' index.html && (echo "Erreur syntaxe détectée!" && exit 1)
 
 
-deploy-serveur:
-  needs: tests-html
-  run-on: self-hosted
-  steps:
-    - uses: action/checkout@v4
-    - name : Copie vers Nginx
-      run: |
-        sudo cp index.html /var/www/html
+  deploy-serveur:
+    needs: tests-html
+    run-on: self-hosted
+    steps:
+      - uses: action/checkout@v4
+      - name: Copie vers Nginx
+        run: sudo cp index.html /var/www/html
