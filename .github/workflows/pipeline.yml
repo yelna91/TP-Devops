@@ -17,7 +17,7 @@ jobs:
 
   deploy-serveur:
     needs: tests-html
-    run-on: self-hosted
+    runs-on: self-hosted
     steps:
       - uses: action/checkout@v4
       - name: Copie vers Nginx
