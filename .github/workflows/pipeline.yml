@@ -1,24 +1,28 @@
-name : Pipeline DevOps ITIS
+name: Pipeline DevOps ITIS
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
+ 
   tests-html:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@4
-      - name: Validation Syntax
-        run: |
-          echo "Verification du fihier index.html..."
-          grep 'style="color:blue;" ' index.html && (echo "Erreur syntaxe détectée!" && exit 1)
+      - name: Recuperation du code
+        uses: actions/checkout@v4  # Correction ici : ajout de 'actions/'
 
+      - name: Validation Syntax HTML
+        run: |
+          echo "Vérification de la syntaxe du fichier index.html..."
+         
+          grep -q 'style="color:blue;">' index.html || (echo "ERREUR : La balise div ligne 61 est mal fermée !" && exit 1)
 
   deploy-serveur:
     needs: tests-html
     runs-on: self-hosted
     steps:
-      - uses: action/checkout@v4
+      - name: Recuperation du code
+        uses: actions/checkout@v4
       - name: Copie vers Nginx
-        run: sudo cp index.html /var/www/html
+        run: sudo cp index.html /var/www/html/
